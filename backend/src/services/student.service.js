@@ -115,4 +115,3 @@ const createStudent = async (data) => {
   return result;
 };
 
-export default { getStudentById, createStudent };
