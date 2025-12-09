@@ -12,3 +12,68 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ======== STUDENTS ========
+model Students {
+    id              BigInt      @id @default(autoincrement())
+    name            String  
+    classId         BigInt      @map("CLASS_ID")      
+
+    // Relation
+    class           Classes     @relation(fields: [classId], references: [id])
+    studentProfile  StudentProfiles?
+    studentCourse   StudentCourse[]
+
+    @@map("STUDENTS")
+}
+
+model Classes {
+    id              BigInt      @id @default(autoincrement())
+    name            String
+    teacherName     String?     @map("TEACHER_NAME")
+
+    // Relation
+    students Students[]
+
+    @@map("CLASSES")
+}
+
+model StudentProfiles {
+    studentId       BigInt      @id @default(autoincrement()) @map("STUDENT_ID")
+    address         String?
+    phone           String?
+    age             Int
+    gender          Gender?      
+
+    // Relation
+    student         Students @relation(fields: [studentId], references: [id])
+
+    @@map("STUDENT_PROFILES")
+}
+
+model StudentCourse {
+    studentId       BigInt      @map("STUDENT_ID") 
+    courseId        BigInt      @map("COURSE_ID")
+
+    // Relation
+    student         Students    @relation(fields: [studentId], references: [id])
+    course          Courses     @relation(fields: [courseId], references: [id])
+
+    @@id([studentId, courseId])
+    @@map("STUDENT_COURSE")
+}
+
+model Courses {
+    id              BigInt       @id @default(autoincrement())
+    title           String
+    description     String?
+
+    // Relation
+    students        StudentCourse[]
+    @@map("COURSES")
+}
+
+enum Gender {
+    Nam
+    Nữ
+}
