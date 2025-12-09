@@ -43,7 +43,8 @@ model StudentProfiles {
     address         String?
     phone           String?
     age             Int
-    gender          Gender?      
+    gender          Gender?    
+    dateOfBirth     DateTime?  
 
     // Relation
     student         Students @relation(fields: [studentId], references: [id])
