@@ -4,14 +4,13 @@ export const getStudentByClass = async (classId, sort, order, limit) => {
   let classInfo = await prisma.classes.findUnique({
     where: { id: Number(classId) },
   });
-  let keySort = "";
+  let orderByOptions;
   if (sort) {
     if (sort == "birthdate") {
-      keySort = dateOfBirth;
+      orderByOptions = { studentProfile: { dateOfBirth: order || "asc" } };
     }
   }
 
-  const orderByOptions = sort ? { [keySort]: order || "asc" } : undefined;
   const students = await prisma.students.findMany({
     where: { classId: Number(classId) },
     take: limit ? Number(limit) : undefined,

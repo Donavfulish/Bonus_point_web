@@ -17,6 +17,7 @@ export const deleteStudentCourse = async (req, res) => {
     );
     res.status(200).json(deletedStudentCourse);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error: error.message });
   }
 };
@@ -33,7 +34,7 @@ export const getMaxCourseStudentController = async (req, res) => {
 }
 
 
-const getStudentById = async (req, res) => {
+export const getStudentById = async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -51,7 +52,7 @@ const getStudentById = async (req, res) => {
   }
 };
 
-const createStudent = async (req, res) => {
+export const createStudent = async (req, res) => {
   try {
     const newStudent = await studentService.createStudent(req.body);
     res.status(200).json(newStudent);
