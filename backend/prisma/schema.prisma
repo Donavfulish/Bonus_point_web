@@ -11,13 +11,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  
 }
 
 // ======== STUDENTS ========
 model Students {
-    id              BigInt      @id @default(autoincrement())
-    name            String  
-    classId         BigInt      @map("CLASS_ID")      
+    id              Int      @id @default(autoincrement()) @map("ID")  
+    name            String      @map("NAME")
+    classId         Int      @map("CLASS_ID")      
 
     // Relation
     class           Classes     @relation(fields: [classId], references: [id])
@@ -28,8 +29,8 @@ model Students {
 }
 
 model Classes {
-    id              BigInt      @id @default(autoincrement())
-    name            String
+    id              Int      @id @default(autoincrement()) @map("ID")
+    name            String       @map("NAME")
     teacherName     String?     @map("TEACHER_NAME")
 
     // Relation
@@ -39,12 +40,12 @@ model Classes {
 }
 
 model StudentProfiles {
-    studentId       BigInt      @id @default(autoincrement()) @map("STUDENT_ID")
-    address         String?
-    phone           String?
-    age             Int
-    gender          Gender?    
-    dateOfBirth     DateTime?  
+    studentId       Int      @id @map("STUDENT_ID")
+    address         String?     @map("ADDRESS")
+    phone           String?     @map("PHONE")
+    age             Int         @map("AGE")
+    gender          Gender?     @map("GENDER")
+    dateOfBirth     DateTime?   @map("DATE_OF_BIRTH")
 
     // Relation
     student         Students @relation(fields: [studentId], references: [id])
@@ -53,8 +54,8 @@ model StudentProfiles {
 }
 
 model StudentCourse {
-    studentId       BigInt      @map("STUDENT_ID") 
-    courseId        BigInt      @map("COURSE_ID")
+    studentId       Int      @map("STUDENT_ID") 
+    courseId        Int      @map("COURSE_ID")
 
     // Relation
     student         Students    @relation(fields: [studentId], references: [id])
@@ -65,9 +66,9 @@ model StudentCourse {
 }
 
 model Courses {
-    id              BigInt       @id @default(autoincrement())
-    title           String
-    description     String?
+    id              Int       @id @default(autoincrement()) @map("ID") 
+    title           String       @map("TITLE")
+    description     String?      @map("DESCRIPTION")
 
     // Relation
     students        StudentCourse[]

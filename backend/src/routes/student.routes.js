@@ -1,12 +1,17 @@
 import { Router } from "express";
-import * as StudentController from "../controllers/student.controllers.js";
+import { getMaxCourseStudentController } from "../controllers/student.controllers.js";
+import * as studentControllers from "../controllers/student.controllers.js";
 
 const router = Router();
 
-router.put("/:id", StudentController.updateStudent);
+router.put("/:id", studentControllers.updateStudent);
 router.delete(
   "/:studentId/course/:courseId",
-  StudentController.deleteStudentCourse
+  studentControllers.deleteStudentCourse
 );
+
+router.get("/", getMaxCourseStudentController);
+router.get("/:id", studentControllers.getStudentById);
+router.post("/", studentControllers.createStudent);
 
 export default router;
