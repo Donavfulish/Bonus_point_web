@@ -43,39 +43,34 @@ export const deleteStudentCourse = async (studentId, courseId) => {
 
 // C1
 export const getMaxCourseStudent = async (name_like) => {
-  try {
-    const studentWithCourseCount = await prisma.studentCourse.groupBy({
-      by: ["studentId"],
-      _count: { courseId: true },
-    });
+  const studentWithCourseCount = await prisma.studentCourse.groupBy({
+    by: ["studentId"],
+    _count: { courseId: true },
+  });
 
-    const maxCourse = Math.max(
-      ...studentWithCourseCount.map((g) => g._count.courseId)
-    );
+  const maxCourse = Math.max(
+    ...studentWithCourseCount.map((g) => g._count.courseId)
+  );
 
-    const result = await prisma.students.findMany({
-      where: {
-        name: { startsWith: name_like },
-      },
-      include: {
-        studentCourse: true,
-      },
-    });
+  const result = await prisma.students.findMany({
+    where: {
+      name: { startsWith: name_like },
+    },
+    include: {
+      studentCourse: true,
+    },
+  });
 
-    const filteredResult = result.filter(
-      (s) => s.studentCourse.length === maxCourse
-    );
+  const filteredResult = result.filter(
+    (s) => s.studentCourse.length === maxCourse
+  );
 
-    return filteredResult;
-  } catch (err) {
-    console.log(err);
-  }
+  return filteredResult;
 };
 
 //C2
 export const getMaxCourseStudentV2 = async (name_like) => {
-  try {
-    const result = await prisma.$executeRawUnsafe(`
+  const result = await prisma.$executeRawUnsafe(`
             SELECT
             FROM "STUDENT" s
             JOIN "STUDENT_COURSE" sub
@@ -90,12 +85,10 @@ export const getMaxCourseStudentV2 = async (name_like) => {
                 ) AS COUNTS
             )
         `);
-    return result;
-  } catch (err) {
-    console.log(err);
-  }
+  return result;
 };
-const getStudentById = async (student_id) => {
+
+export const getStudentById = async (student_id) => {
   const result = await prisma.students.findUnique({
     where: { id: Number(student_id) },
     //include: { class: true, studentProfile: true },
@@ -110,16 +103,14 @@ const getStudentById = async (student_id) => {
   return result;
 };
 
-const createStudent = async (data) => {
-  const { student_name, class_id } = data;
+export const createStudent = async (data) => {
+  const { name, classId } = data;
   const result = await prisma.students.create({
     data: {
-      name: student_name,
-      classId: class_id,
+      name: name,
+      classId: classId,
     },
   });
 
   return result;
 };
-
-export default { getStudentById, createStudent };
