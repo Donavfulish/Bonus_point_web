@@ -17,3 +17,15 @@ export const deleteStudentCourse = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getMaxCourseStudentController = async (req, res) => {
+    try {
+        const { name_like = "" } = req.query;
+        const result = await StudentService.getMaxCourseStudent(name_like);
+        res.json(result);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err: err })
+    }
+}
+
