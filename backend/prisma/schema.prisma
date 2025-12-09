@@ -39,7 +39,7 @@ model Classes {
 }
 
 model StudentProfiles {
-    studentId       BigInt      @id @default(autoincrement()) @map("STUDENT_ID")
+    studentId       BigInt      @id @map("STUDENT_ID")
     address         String?
     phone           String?
     age             Int
